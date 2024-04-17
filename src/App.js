@@ -1,25 +1,37 @@
-// App.js
 import React, { useState } from 'react';
-
-import PasswordForm from './components/PasswordForm';
-import PasswordList from './components/PasswordList';
+import StudentForm from './components/StudentForm';
+import StudentList from './components/StudentList';
+import StudentCount from './components/StudentCount';
 
 function App() {
-  const [passwords, setPasswords] = useState([]);
+  const [studentList, setStudentList] = useState([]);
 
-  const handleAddPassword = (newPassword) => {
-    setPasswords([...passwords, newPassword]);
+  const handleAddStudent = (newStudent) => {
+    if (!newStudent.address) {
+      // Address field is empty, handle this case (e.g., show an error message)
+      
+      return;
+    }
+    setStudentList([newStudent, ...studentList]); // Add the new student to the list
+  };
+  
+  const handleDeleteStudent = (id) => {
+    setStudentList(studentList.filter((student) => student.id !== id));
   };
 
-  const handleDeletePassword = (id) => {
-    setPasswords(passwords.filter((password) => password.id !== id));
-  };
+
+
 
   return (
-    <div className="container">
-      <h1>Password Keeper</h1>
-      <PasswordForm onAddPassword={handleAddPassword} />
-      <PasswordList passwords={passwords} onDeletePassword={handleDeletePassword} />
+    <div className="container" >
+      <h1>Student Details</h1>
+      <StudentForm onAddStudent={handleAddStudent} />
+      <StudentList
+       studentList={studentList}
+       
+        onDeleteStudent={handleDeleteStudent} 
+      />
+      <StudentCount count={studentList.length} />
     </div>
   );
 }
